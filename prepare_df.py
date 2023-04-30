@@ -3,6 +3,7 @@ import numpy as np
 
 def add_sma_crossover(df):
     copy = df.copy()
+    ## Calculates the and assign the moving average for the specified window size.
     copy["SMA_50"] = copy["Close"].rolling(50).mean()
     copy["SMA_200"] = copy["Close"].rolling(200).mean()
     return copy
@@ -11,6 +12,7 @@ def add_sma_crossover(df):
 def add_bollinger_bands(df):
     copy = df.copy()
     
+    # 
     sma_20 = copy["Close"].rolling(20)
     mean = sma_20.mean()
     two_sigmas = 2 * sma_20.std()

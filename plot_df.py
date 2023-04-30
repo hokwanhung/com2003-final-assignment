@@ -12,6 +12,8 @@ today = datetime.datetime.now()
 date_pattern = "%Y-%m-%d"
 ## Formats today DateTime Object into the above date_pattern
 today_str = today.strftime(date_pattern)
+## Creates a 'date_ranges' dictionary and values corresponding to the start date of each interval relative to 'today'.
+## timedelta() function allows to perform arithmetic with dates and times.
 date_ranges = {
     "1M": (today - datetime.timedelta(days=30)).strftime(date_pattern),
     "3M": (today - datetime.timedelta(days=90)).strftime(date_pattern),
@@ -24,6 +26,7 @@ date_ranges = {
 def plot_candlestick(df, symbol, rng):
     start = date_ranges[rng]
     end = today_str
+    ## Plots a candlestick chart using the mplfinance library.
     mpf.plot(
         df[start:end],
         type="candle",
@@ -41,6 +44,7 @@ def plot_candlestick(df, symbol, rng):
 def plot_sma_crossover(df, symbol, rng):
     start = date_ranges[rng]
     end = today_str
+    ## Selects and store the columns "Close", "SMA_50" and "SMA_200" from the DataFrame.
     temp_df = df.loc[start:end, ["Close", "SMA_50", "SMA_200"]]
     temp_df.plot(
         title=f"{symbol} SMA Crossover, {rng}",
