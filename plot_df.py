@@ -10,6 +10,7 @@ from matplotlib.lines import Line2D
 today = datetime.datetime.now()
 
 date_pattern = "%Y-%m-%d"
+## Formats today DateTime Object into the above date_pattern
 today_str = today.strftime(date_pattern)
 date_ranges = {
     "1M": (today - datetime.timedelta(days=30)).strftime(date_pattern),
