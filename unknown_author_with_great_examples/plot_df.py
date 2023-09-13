@@ -148,10 +148,10 @@ def plot_macd(df, symbol, rng, periods=14):
     ]
     ax[1].legend(custom_lines, ["MACD", "Signal", "Diff"], loc="best")
 
-    
-def plot_obv(df, symbol, rng):    
+
     start = date_ranges[rng]
     end = today_str
+def plot_obv(df, symbol, rng):
     temp_df = df[start:end]
     
     # See

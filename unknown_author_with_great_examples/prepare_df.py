@@ -35,6 +35,8 @@ def add_stochastic_oscillator(df, periods=14):
     
     high_roll = copy["High"].rolling(periods).max()
     low_roll = copy["Low"].rolling(periods).min()
+    print(high_roll)
+    print(low_roll)
     
     # Fast stochastic indicator
     ## %K = 100 * [(Close - Lowest Low in Period)/(Highest High in Period - Lowest Low in Period)]
