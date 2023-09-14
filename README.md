@@ -1,4 +1,4 @@
-# COM2003-Project
+# com2003-final-assignment
 
 This project is dedicated to design an algo trade algorithm, including both conceptual and technical side.
 

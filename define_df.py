@@ -11,7 +11,7 @@ def add_sma_crossover(df):
 
 def add_sma_crossover_with_signals(df):
     copy = df.copy()
-    # Calculate the and assign the moving average for the specified window size.
+    # Calculates the and assign the moving average for the specified window size.
     copy["SMA_50"] = copy["Close"].rolling(50).mean()
     copy["SMA_200"] = copy["Close"].rolling(200).mean()
 
@@ -19,8 +19,10 @@ def add_sma_crossover_with_signals(df):
     # SMA_50 > SMA_200 (crosses above) = bullish signals.
     # SMA_50 < SMA_200 (crosses below) = bearish signals.
     copy["Signal"] = 0
-    copy.loc[(copy["SMA_50"] > copy["SMA_200"]) & (copy["SMA_50"].shift() < copy["SMA_200"].shift()), "Signal"] = 1
-    copy.loc[(copy["SMA_50"] < copy["SMA_200"]) & (copy["SMA_50"].shift() > copy["SMA_200"].shift()), "Signal"] = -1
+    copy.loc[(copy["SMA_50"] > copy["SMA_200"]) & (
+        copy["SMA_50"].shift() < copy["SMA_200"].shift()), "Signal"] = 1
+    copy.loc[(copy["SMA_50"] < copy["SMA_200"]) & (
+        copy["SMA_50"].shift() > copy["SMA_200"].shift()), "Signal"] = -1
 
     return copy
 
@@ -52,6 +54,7 @@ def add_stochastic_oscillator(df, periods=14):
     copy["%D"] = copy["%K"].rolling(3).mean()
 
     return copy
+
 
 def add_stochastic_oscillator_strats_with_signals(df, periods=14, strat=0):
     # 14, 3, 3:

@@ -10,10 +10,10 @@ from matplotlib.lines import Line2D
 today = datetime.datetime.now()
 
 date_pattern = "%Y-%m-%d"
-## Formats today DateTime Object into the above date_pattern
+# Formats today DateTime Object into the above date_pattern
 today_str = today.strftime(date_pattern)
-## Creates a 'date_ranges' dictionary and values corresponding to the start date of each interval relative to 'today'.
-## timedelta() function allows to perform arithmetic with dates and times.
+# Creates a 'date_ranges' dictionary and values corresponding to the start date of each interval relative to 'today'.
+# timedelta() function allows to perform arithmetic with dates and times.
 date_ranges = {
     "1M": (today - datetime.timedelta(days=30)).strftime(date_pattern),
     "3M": (today - datetime.timedelta(days=90)).strftime(date_pattern),
@@ -26,7 +26,7 @@ date_ranges = {
 def plot_candlestick(df, symbol, rng):
     start = date_ranges[rng]
     end = today_str
-    ## Plots a candlestick chart using the mplfinance library.
+    # Plots a candlestick chart using the mplfinance library.
     mpf.plot(
         df[start:end],
         type="candle",
@@ -44,7 +44,7 @@ def plot_candlestick(df, symbol, rng):
 def plot_sma_crossover(df, symbol, rng):
     start = date_ranges[rng]
     end = today_str
-    ## Selects and store the columns "Close", "SMA_50" and "SMA_200" from the DataFrame.
+    # Selects and store the columns "Close", "SMA_50" and "SMA_200" from the DataFrame.
     temp_df = df.loc[start:end, ["Close", "SMA_50", "SMA_200"]]
     temp_df.plot(
         title=f"{symbol} SMA Crossover, {rng}",
@@ -56,13 +56,13 @@ def plot_sma_crossover(df, symbol, rng):
 def plot_capital_appreciation(df, symbol, rng):
     start = date_ranges[rng]
     end = today_str
-    
+
     # Combined frame with multiple tickers.
     # Currently there's just one but we want to add index and peers as indicated above.
     comb_df = pd.DataFrame({
         symbol: df.loc[start:end, "Close"],
     })
-    
+
     norm_df = comb_df.div(comb_df.iloc[0])
     norm_df.plot(title=f"{symbol} capital appreciation, {rng}", figsize=(8, 3))
 
@@ -81,16 +81,18 @@ def plot_stochastic_oscillator(df, symbol, rng, periods=14):
     start = date_ranges[rng]
     end = today_str
     temp_df = df[start:end]
-    
-    fig, ax = plt.subplots(nrows=2, ncols=1, sharex=True, tight_layout=True, figsize=(8, 6))
+
+    fig, ax = plt.subplots(nrows=2, ncols=1, sharex=True,
+                           tight_layout=True, figsize=(8, 6))
 
     ax[0].set_title(f"{symbol} price, {rng}")
     ax[0].plot(temp_df["Close"], color="tab:blue")
 
-    ax[1].set_title(f"{symbol} Stochastic Oscillator ({periods}-day period), {rng}")
+    ax[1].set_title(
+        f"{symbol} Stochastic Oscillator ({periods}-day period), {rng}")
     ax[1].set_ylim(-10, 110)
-    ax[1].plot(temp_df["%K"], color="tab:blue") # fast
-    ax[1].plot(temp_df["%D"], color="tab:orange") # slow
+    ax[1].plot(temp_df["%K"], color="tab:blue")  # fast
+    ax[1].plot(temp_df["%D"], color="tab:orange")  # slow
     ax[1].axhline(80, color="tab:red", ls="--")
     ax[1].axhline(20, color="tab:green", ls="--")
 
@@ -100,15 +102,17 @@ def plot_stochastic_oscillator(df, symbol, rng, periods=14):
         Line2D([0], [0], color="tab:red", lw=4),
         Line2D([0], [0], color="tab:green", lw=4),
     ]
-    ax[1].legend(custom_lines, ["%K", "%D", "Overbought", "Oversold"], loc="best")
+    ax[1].legend(custom_lines, ["%K", "%D",
+                 "Overbought", "Oversold"], loc="best")
 
 
 def plot_rsi(df, symbol, rng, periods=14):
     start = date_ranges[rng]
     end = today_str
     temp_df = df[start:end]
-    
-    fig, ax = plt.subplots(nrows=2, ncols=1, sharex=True, tight_layout=True, figsize=(8, 6))
+
+    fig, ax = plt.subplots(nrows=2, ncols=1, sharex=True,
+                           tight_layout=True, figsize=(8, 6))
 
     ax[0].set_title(f"{symbol} price, {rng}")
     ax[0].plot(temp_df["Close"])
@@ -130,16 +134,17 @@ def plot_macd(df, symbol, rng, periods=14):
     start = date_ranges[rng]
     end = today_str
     temp_df = df[start:end]
-    
-    fig, ax = plt.subplots(nrows=2, ncols=1, sharex=True, tight_layout=True, figsize=(8, 6))
+
+    fig, ax = plt.subplots(nrows=2, ncols=1, sharex=True,
+                           tight_layout=True, figsize=(8, 6))
 
     ax[0].set_title(f"{symbol} price, {rng}")
     ax[0].plot(temp_df["Close"])
 
     ax[1].set_title(f"{symbol} MACD, {rng}")
-    ax[1].plot(temp_df["MACD"], color="tab:blue") # slow signal
-    ax[1].plot(temp_df["MACD-s"], color="tab:orange") # fast signal
-    ax[1].bar(temp_df.index, height=temp_df["MACD-h"], color="black") # diff
+    ax[1].plot(temp_df["MACD"], color="tab:blue")  # slow signal
+    ax[1].plot(temp_df["MACD-s"], color="tab:orange")  # fast signal
+    ax[1].bar(temp_df.index, height=temp_df["MACD-h"], color="black")  # diff
 
     custom_lines = [
         Line2D([0], [0], color="tab:blue", lw=4),
@@ -148,17 +153,19 @@ def plot_macd(df, symbol, rng, periods=14):
     ]
     ax[1].legend(custom_lines, ["MACD", "Signal", "Diff"], loc="best")
 
-
     start = date_ranges[rng]
     end = today_str
+
+
 def plot_obv(df, symbol, rng):
     temp_df = df[start:end]
-    
+
     # See
     # https://github.com/matplotlib/mplfinance/blob/master/examples/addplot.ipynb
     # https://github.com/matplotlib/mplfinance/blob/8fa38f2dcd6d3b75c97145b5ded953f13641625e/src/mplfinance/plotting.py#L36
-    obv_addplot = mpf.make_addplot(temp_df["OBV"], width=2, panel=2, ylabel="OBV")
-    
+    obv_addplot = mpf.make_addplot(
+        temp_df["OBV"], width=2, panel=2, ylabel="OBV")
+
     # See https://github.com/DanielGoldfarb/mplfinance/blob/master/examples/panels.ipynb
     mpf.plot(
         temp_df,
